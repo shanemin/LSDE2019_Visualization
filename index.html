@@ -264,7 +264,7 @@
     cursor.behavior = "zoomX";
     
     cursor.xAxis = categoryAxis;
-    cursor.innerRadius = am4core.percent(30);
+    cursor.innerRadius = am4core.percent(50);
     cursor.lineY.disabled = true;
     
     cursor.lineX.fillOpacity = 0.2;
@@ -280,7 +280,6 @@
     
     var weekSlider = weekSliderContainer.createChild(am4core.Slider);
     weekSlider.events.on("rangechanged", function () {
-        // updateRadarData(startWeek + Math.round(weekSlider.start * (endWeek - startWeek)));
         updateRadarData(weeks[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))], years[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))], oil_prices[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))]);
     })
     weekSlider.orientation = "horizontal";
