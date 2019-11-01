@@ -144,9 +144,13 @@
     var endWeek = weeks.length - 1;
     var currentWeek = weeks[0];
 
-    var startYear = 2014;
+    var startYear = 0;
     var endYear = years.length - 1;
     var currentYear = years[0];
+
+    var startPrice = 0;
+    var endPrice = oil_prices.length - 1;
+    var currentPrice = oil_prices[0];
 
     var colorSet = new am4core.ColorSet();
     
@@ -164,7 +168,7 @@
     // year label goes in the middle
     var yearLabel = chart.radarContainer.createChild(am4core.Label);
     yearLabel.horizontalCenter = "middle";
-    yearLabel.y = "-30vh";
+    yearLabel.y = "-50vh";
     yearLabel.fill = am4core.color("#673AB7");
     yearLabel.fontSize = 30;
     yearLabel.text = "Year " + String(currentYear);
@@ -172,10 +176,18 @@
     // week label goes in the middle
     var weekLabel = chart.radarContainer.createChild(am4core.Label);
     weekLabel.horizontalCenter = "middle";
-    weekLabel.y = "10vh";
+    weekLabel.y = "-10vh";
     weekLabel.fill = am4core.color("#673AB7");
     weekLabel.fontSize = 30;
     weekLabel.text = "Week " + String(currentWeek);
+
+    // oil proce label goes in the middle
+    var priceLabel = chart.radarContainer.createChild(am4core.Label);
+    priceLabel.horizontalCenter = "middle";
+    priceLabel.y = "30vh";
+    priceLabel.fill = am4core.color("#673AB7");
+    priceLabel.fontSize = 30;
+    priceLabel.text = "$" + String(currentPrice);
     
     // zoomout button
     var zoomOutButton = chart.zoomOutButton;
@@ -263,13 +275,13 @@
     // weeks slider
     var weekSliderContainer = chart.createChild(am4core.Container);
     weekSliderContainer.layout = "vertical";
-    weekSliderContainer.padding(0, 38, 0, 38);
+    weekSliderContainer.padding(0, 200, 0, 200);
     weekSliderContainer.width = am4core.percent(100);
     
     var weekSlider = weekSliderContainer.createChild(am4core.Slider);
     weekSlider.events.on("rangechanged", function () {
         // updateRadarData(startWeek + Math.round(weekSlider.start * (endWeek - startWeek)));
-        updateRadarData(weeks[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))], years[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))]);
+        updateRadarData(weeks[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))], years[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))], oil_prices[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))]);
     })
     weekSlider.orientation = "horizontal";
     weekSlider.start = 0;
@@ -300,13 +312,14 @@
         return data;
     }
     
-    
-    function updateRadarData(week, year) {
+    function updateRadarData(week, year, price) {
         if (currentWeek != week) {
             currentWeek = week;
             currentYear = year;
+            currentPrice = price;
             weekLabel.text = "Week " + String(currentWeek);
             yearLabel.text = "Year " + String(currentYear);
+            priceLabel.text = "$" + String(currentPrice);
             series.dataFields.valueY = "value" + currentWeek;
             chart.invalidateRawData();
         }
