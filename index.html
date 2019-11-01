@@ -137,16 +137,21 @@
     }
 
     var oil_prices = [92.13,89.63,85.31,85.65,85.27,83.04,79.13,68.89,63.31,59.44,58.48,56.24,48.84,46.71,46.46,47.58,55.14,57.82,60.52,60.83,59.77,55.21,56.65,59.73,61.84,63.75,64.91,60.46,60.48,59.72,48.19,47.25,47.37,47.14,47.28,51.38,48.78,41.99,43.58,32.13,30.73,32.24,33.89,36.86,39.14,38.81,38.92,36.78,38.55,42.10,43.16,44.83,44.00,48.84,48.88,49.83,47.30,45.48,45.61,44.87,41.95,41.45,44.37,48.64,48.94,47.03,47.67,49.95,49.70,50.25,48.39,44.15,52.50,53.42,55.11,54.11,54.40,54.87,55.52,54.54,54.58,55.19,54.41,52.09,50.39,50.09,51.56,53.63,54.60,51.40,49.66,48.23,48.63,52.13,52.29,49.70,47.17,46.08,44.48,46.72,47.70,47.30,47.89,50.53,52.02,51.80,50.83,51.98]
-    var week = [2014,2014,2014,2014,2014,2014,2014,2014,2014,2014,2014,2014,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017]
-    var week = [40,41,42,43,44,45,46,49,50,51,52,53,2,3,4,5,6,7,8,9,10,14,15,16,17,18,20,25,26,27,36,37,38,39,40,41,42,47,48,5,6,7,8,9,10,11,12,13,14,15,16,17,18,21,22,23,26,27,28,29,30,31,32,33,34,35,36,40,41,42,43,44,49,50,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
+    var years = [2014,2014,2014,2014,2014,2014,2014,2014,2014,2014,2014,2014,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017]
+    var weeks = [40,41,42,43,44,45,46,49,50,51,52,53,2,3,4,5,6,7,8,9,10,14,15,16,17,18,20,25,26,27,36,37,38,39,40,41,42,47,48,5,6,7,8,9,10,11,12,13,14,15,16,17,18,21,22,23,26,27,28,29,30,31,32,33,34,35,36,40,41,42,43,44,49,50,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
 
     var startWeek = 0;
-    var endWeek = week.length - 1;
-    var currentWeek = week[0];
+    var endWeek = weeks.length - 1;
+    var currentWeek = weeks[0];
+
+    var startYear = 2014;
+    var endYear = years.length - 1;
+    var currentYear = years[0];
+
     var colorSet = new am4core.ColorSet();
     
     var chart = am4core.create("chartdiv", am4charts.RadarChart);
-    chart.numberFormatter.numberFormat = "# knots";
+    chart.numberFormatter.numberFormat = "#  knots";
     chart.hiddenState.properties.opacity = 0;
     
     chart.startAngle = 270 - 180;
@@ -155,11 +160,19 @@
     chart.padding(5,15,5,10)
     chart.radius = am4core.percent(75);
     chart.innerRadius = am4core.percent(50);
+
+    // year label goes in the middle
+    var yearLabel = chart.radarContainer.createChild(am4core.Label);
+    yearLabel.horizontalCenter = "middle";
+    yearLabel.y = "-30vh";
+    yearLabel.fill = am4core.color("#673AB7");
+    yearLabel.fontSize = 30;
+    yearLabel.text = "Year " + String(currentYear);
     
     // week label goes in the middle
     var weekLabel = chart.radarContainer.createChild(am4core.Label);
     weekLabel.horizontalCenter = "middle";
-    weekLabel.verticalCenter = "middle";
+    weekLabel.y = "10vh";
     weekLabel.fill = am4core.color("#673AB7");
     weekLabel.fontSize = 30;
     weekLabel.text = "Week " + String(currentWeek);
@@ -222,14 +235,13 @@
     valueAxisRenderer.minGridDistance = 20;
     valueAxisRenderer.grid.template.strokeOpacity = 0.05;
     
-    
     // series
     var series = chart.series.push(new am4charts.RadarColumnSeries());
     series.columns.template.width = am4core.percent(90);
     series.columns.template.strokeOpacity = 0;
     series.dataFields.valueY = "value" + currentWeek;
     series.dataFields.categoryX = "country";
-    series.tooltipText = "{categoryX}:{valueY.value}";
+    series.tooltipText = "{categoryX}: {valueY.value}";
     
     // this makes columns to be of a different color, depending on value
     series.heatRules.push({ target: series.columns.template, property: "fill", minValue: 0, maxValue: 10, min: am4core.color("#673AB7"), max: am4core.color("#F44336"), dataField: "valueY" });
@@ -248,7 +260,7 @@
     cursor.lineX.strokeOpacity = 0;
     cursor.fullWidthLineX = true;
     
-    // week slider
+    // weeks slider
     var weekSliderContainer = chart.createChild(am4core.Container);
     weekSliderContainer.layout = "vertical";
     weekSliderContainer.padding(0, 38, 0, 38);
@@ -257,7 +269,7 @@
     var weekSlider = weekSliderContainer.createChild(am4core.Slider);
     weekSlider.events.on("rangechanged", function () {
         // updateRadarData(startWeek + Math.round(weekSlider.start * (endWeek - startWeek)));
-        updateRadarData(week[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))]);
+        updateRadarData(weeks[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))], years[startWeek + Math.round(weekSlider.start * (endWeek - startWeek))]);
     })
     weekSlider.orientation = "horizontal";
     weekSlider.start = 0;
@@ -289,10 +301,12 @@
     }
     
     
-    function updateRadarData(week) {
+    function updateRadarData(week, year) {
         if (currentWeek != week) {
             currentWeek = week;
+            currentYear = year;
             weekLabel.text = "Week " + String(currentWeek);
+            yearLabel.text = "Year " + String(currentYear);
             series.dataFields.valueY = "value" + currentWeek;
             chart.invalidateRawData();
         }
